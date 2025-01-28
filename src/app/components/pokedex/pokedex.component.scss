@@ -1,11 +1,17 @@
 .pokedex {
-  &.container {
-    min-height: 100vh;
-    background-color: var(--mat-sys-primary);
-    display: flex;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  .pokedex-header {
+    font-size: 48px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    margin-top: 48px;
+    color: white;
   }
 
   .pokedex-input-container {
@@ -18,9 +24,8 @@
   
   .pokedex-input {
     width: 95%;
-    background-color: black;
+    background-color: white;
     height: 100%;
-    color: white;
     border-radius: 6px 0px 0px 6px;
     outline: none;
     box-shadow: none;
@@ -30,7 +35,7 @@
   }
 
   .pokedex-search {
-    background-color: #30A7D7;
+    background-color: #0075BE;
     height: 100%;
     border-radius: 0px 6px 6px 0px;
     padding: 0px;

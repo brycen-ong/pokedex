@@ -1,7 +1,8 @@
 <div class="pokedex container">
+  <div class="pokedex-header">Look up a Pokemon!</div>
   <div class="pokedex-input-container">
-    <input class="pokedex-input">
-    <button mat-button class="pokedex-search button">
+    <input class="pokedex-input" [(ngModel)]="pokemonInput">
+    <button mat-flat-button class="pokedex-search button" (click)="getPokemon()">
       <mat-icon [fontIcon]="'search'" class="pokedex-search-icon"></mat-icon>
     </button>
   </div>

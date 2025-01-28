@@ -2,20 +2,27 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { PokedexComponent } from './components/pokedex/pokedex.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
+import { EmptyLayoutComponent } from './layouts/empty-layout/empty-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: EmptyLayoutComponent,
     children: [
       {
         path: '',
         component: HomeComponent,
-      },
+      }
+    ]
+  },
+  {
+    path: 'pokedex',
+    component: DefaultLayoutComponent,
+    children: [
       {
-        path: 'pokedex',
+        path: '',
         component: PokedexComponent,
       }
     ]
-  }
+  },
 ];

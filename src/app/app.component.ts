@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getBulbasaur();
+    // this.getBulbasaur();
   }
 
   async getBulbasaur(): Promise<void> {

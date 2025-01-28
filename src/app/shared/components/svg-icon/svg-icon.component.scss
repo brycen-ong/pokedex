@@ -1,5 +1,4 @@
 .svg-icon {
-  color: white;
   &.s {
     height: 30px;
     width: 30px;
@@ -18,5 +17,22 @@
   &.xl {
     height: 60px;
     width: 60px;
+  }
+
+  &.home {
+    height: 120px;
+    width: 120px;
+  }
+
+  &.white {
+    color: white;
+  }
+
+  &.black {
+    color: black;
+  }
+
+  &.primary {
+    color: var(--mat-sys-primary);
   }
 }

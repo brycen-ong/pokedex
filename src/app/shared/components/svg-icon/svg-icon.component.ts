@@ -12,7 +12,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class SvgIconComponent {
   @Input() icon = '';
-  @Input() size: 's' | 'm' | 'l' | 'xl' = 'm';
+  @Input() size: 's' | 'm' | 'l' | 'xl' | 'home' = 'm';
+  @Input() color: 'white' | 'black' | 'primary' = 'white';
 
   constructor(
     private matIconRegistry: MatIconRegistry,

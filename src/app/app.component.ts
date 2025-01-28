@@ -9,19 +9,6 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'pokedex';
-
-  constructor(
-    private pokemonService: PokemonService,
-  ) {}
-
-  ngOnInit(): void {
-    // this.getBulbasaur();
-  }
-
-  async getBulbasaur(): Promise<void> {
-    const bulbasaur = await firstValueFrom(this.pokemonService.getPokemonData('bulbasaur'));
-    console.log('bulbasaur: ', bulbasaur);
-  }
 }

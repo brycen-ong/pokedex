@@ -1,4 +1,10 @@
 <mat-toolbar class="nav-bar container-wide">
-  <img src="assets/svg/pokeball.svg" alt="" class="nav-bar-logo">
-  <div class="nav-bar-title">PokéDex</div>
+  <div class="left">
+    <app-svg-icon icon="pokeball" size="l"></app-svg-icon>
+    <div class="nav-bar-title">PokéDex</div>
+  </div>
+  <div class="right">
+    <button mat-flat-button class="button nav-bar-button" routerLink="home">Home</button>
+    <button mat-flat-button class="button nav-bar-button" routerLink="pokedex">PokéDex</button>
+  </div>
 </mat-toolbar>

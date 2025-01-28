@@ -1,0 +1,22 @@
+.svg-icon {
+  color: white;
+  &.s {
+    height: 30px;
+    width: 30px;
+  }
+
+  &.m {
+    height: 36px;
+    width: 36px;
+  }
+
+  &.l {
+    height: 50px;
+    width: 50px;
+  }
+
+  &.xl {
+    height: 60px;
+    width: 60px;
+  }
+}

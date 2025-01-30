@@ -1,0 +1,20 @@
+.pokedex-pokemon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .pokedex-pokemon-card {
+    width: 100%;
+    padding: 36px;
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      width: 50%;
+    }
+
+    .right {
+      width: 50%;
+    }
+  }
+}

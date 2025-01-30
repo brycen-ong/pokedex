@@ -78,6 +78,14 @@ export namespace PokeApi {
     back_shiny: string;
     back_female: string;
     back_shiny_female: string;
+    other: {
+      'official-artwork': {
+        front_default: string;
+      },
+      showdown: {
+        front_default: string;
+      }
+    }
   };
 
   export interface PokemonCries {

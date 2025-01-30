@@ -1,36 +1,47 @@
 <div class="pokedex-pokemon container">
   <mat-card class="pokedex-pokemon-card">
     <div class="left">
-      <img class="front-sprite" src="">
-      <img class="back-sprite" src="">
-      <div class="img-carousel">
-        <img class="sprite" src="">
+      <img class="pokemon-image" [src]="pokemonImage">
+      <div class="pokemon-info">
+        <div class="pokemon-name">{{ pokemon.name || 'name'}}</div>
+        <div class="pokemon-id">#{{ pokemon.id || 'id'}}</div>
       </div>
-      <div class="pokemon-details">
-        <div>Height: {{ pokemon.height || 'height' }}m</div>
-        <div>Weight: {{ pokemon.weight || 'weight'}}kg</div>
-      </div>
-    </div>
-    <div class="right">
-      <div class="pokemon-header">
-        <div class="pokemon-name">#{{ pokemon.id || 'id'}} {{ pokemon.name || 'name'}}</div>
+      <div class="pokemon-type-container">
         @for (type of pokemon.types; track type) {
-          <div class="pokemon-type" [class]="type">{{ type }}</div>
+          <div class="pokemon-type" [class]="type + '-type'">{{ type }}</div>
         }
       </div>
-      <div class="pokemon-abilities">
-        <div>Abilities:</div>
+      <div class="pokemon-details">
+        <div class="pokemon-stat">
+          <div class="pokemon-stat-title">HEIGHT</div>
+          <div class="pokemon-stat-value">{{ pokemon.height || 'height' }}m</div>
+        </div>
+        <div class="pokemon-stat">
+          <div class="pokemon-stat-title">WEIGHT</div>
+          <div class="pokemon-stat-value">{{ pokemon.weight || 'weight' }}kg</div>
+        </div>
+      </div>
+    </div>
+    <div class="middle">
+      <div class="pokemon-ability-title">ABILITIES</div>
+      <div class="pokemon-ability-container">
         @for (ability of pokemon.abilities; track ability) {
           <div class="pokemon-ability">{{ ability || 'ability' }}</div>
         }
-        @if(pokemon.hidden_abilities && pokemon.hidden_abilities.length > 0) {
-          <div>Hidden Abilities:</div>
+      </div>
+      @if(pokemon.hidden_abilities && pokemon.hidden_abilities.length > 0) {
+        <div class="pokemon-ability-title">HIDDEN ABILITIES</div>
+        <div class="pokemon-ability-container">
           @for (ability of pokemon.hidden_abilities; track ability) {
             <div class="pokemon-ability">{{ ability || 'ability' }}</div>
           }
-        }
-      </div>
+        </div>
+      }
+      
+    </div>
+    <div class="right">
       <div class="pokemon-stats">
+        <div>STATS</div>
         <div class="pokemon-stat-left">
           <div>HP: {{ pokemon.stats?.hp || '0' }}</div>
           <div>Atk: {{ pokemon.stats?.atk || '0' }}</div>

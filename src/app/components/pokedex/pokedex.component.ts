@@ -3,9 +3,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { PokemonService } from '../../services/pokemon.service';
-import { firstValueFrom } from 'rxjs';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokedex',
@@ -23,11 +22,11 @@ export class PokedexComponent {
   pokemonInput: string = '';
 
   constructor(
-    private pokemonService: PokemonService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
-  async getPokemon(): Promise<void> {
-    const res = await firstValueFrom(this.pokemonService.getPokemonData(this.pokemonInput));
-    console.log(res);
+  async searchPokemon(): Promise<void> {
+    this.router.navigate([`./${this.pokemonInput.toLocaleLowerCase()}`], { relativeTo: this.route });
   }
 }

@@ -27,7 +27,6 @@ export class PokedexComponent {
   ) {}
 
   async getPokemon(): Promise<void> {
-    console.log(this.pokemonInput);
     const res = await firstValueFrom(this.pokemonService.getPokemonData(this.pokemonInput));
     console.log(res);
   }

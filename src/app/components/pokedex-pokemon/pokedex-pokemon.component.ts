@@ -5,11 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { PokemonService } from '../../services/pokemon.service';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-pokedex-pokemon',
   imports: [
     MatCardModule,
+    MatIconModule,
     RouterModule,
   ],
   templateUrl: './pokedex-pokemon.component.html',
@@ -20,6 +22,14 @@ export class PokedexPokemonComponent implements OnInit {
   pokemon: Pokedex.Pokemon = {};
   sprites: (string | undefined)[] = [];
   pokemonImage: string = '';
+  pokemonStatWidths = {
+    hp: 'calc((255 / 255) * 100%)',
+    atk: 'calc((255 / 255) * 100%)',
+    def: 'calc((255 / 255) * 100%)',
+    spa: 'calc((255 / 255) * 100%)',
+    spd: 'calc((255 / 255) * 100%)',
+    spe: 'calc((255 / 255) * 100%)',
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -32,5 +42,18 @@ export class PokedexPokemonComponent implements OnInit {
     this.sprites = Object.values(this.pokemon.sprites as PokeApi.PokemonSprites).filter((value) => typeof value === 'string');
     const backUpImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.pokemon.id}.png`
     this.pokemonImage = this.pokemon.sprites?.other['official-artwork'].front_default ?? backUpImage;
+    this.getPokemonStatWidths();
+  }
+
+  getPokemonStatWidths(): void {
+    Object.keys(this.pokemonStatWidths).forEach((stat) => {
+      this.pokemonStatWidths[stat as keyof typeof this.pokemonStatWidths] = this.getPokemonStatWidthCalc(
+        this.pokemon.stats?.[stat as keyof typeof this.pokemonStatWidths]
+      );
+    });
+  }
+
+  getPokemonStatWidthCalc(value: number | undefined | null) : string {
+    return `calc((${value} / 255) * 80%)`
   }
 }

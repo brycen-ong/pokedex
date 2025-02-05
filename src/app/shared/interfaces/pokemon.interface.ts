@@ -18,5 +18,6 @@ export namespace Pokedex {
     height?: number;
     weight?: number;
     sprites?: PokeApi.PokemonSprites;
+    flavorText?: string;
   }
 }

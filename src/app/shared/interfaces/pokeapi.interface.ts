@@ -8,7 +8,7 @@ export namespace PokeApi {
     order: number;
     weight: number;
     abilities: PokemonAbility[];
-    forms: NamedApiResource[];
+    forms: NamedAPIResource[];
     game_indices: VersionGameIndex[];
     held_items: PokemonHeldItem[];
     location_area_encounters: string;
@@ -16,55 +16,85 @@ export namespace PokeApi {
     past_types: PokemonTypePast[];
     sprites: PokemonSprites;
     cries: PokemonCries;
-    species: NamedApiResource[];
+    species: NamedAPIResource[];
     stats: PokemonStat[];
     types: PokemonType[];
+  }
+
+  export interface PokemonSpeciesResponse {
+    id: number;
+    name: string;
+    order: number;
+    gender_rate: number;
+    capture_rate: number;
+    base_happiness: number;
+    is_baby: boolean;
+    is_legendary: boolean;
+    is_mythical: boolean;
+    hatch_counter: number;
+    has_gender_differences: boolean;
+    forms_switchable: boolean;
+    growth_rate: NamedAPIResource;
+    pokedex_numbers: PokemonSpeciesDexEntry[];
+    egg_groups: NamedAPIResource[];
+    color: NamedAPIResource;
+    shape: NamedAPIResource;
+    evolves_from_species: NamedAPIResource;
+    evolution_chain: NamedAPIResource;
+    habitat: NamedAPIResource;
+    generation: NamedAPIResource;
+    names: Name[];
+    pal_park_encounters: PalParkEncounterArea[];
+    flavor_text_entries: FlavorText[];
+    form_descriptions: Description[];
+    genera: Genus[];
+    varieties: PokemonSpeciesVariety[];
   }
   
   export interface PokemonAbility {
     is_hidden: boolean;
     slot: number;
-    ability: NamedApiResource;
+    ability: NamedAPIResource;
   }
 
   export interface PokemonType {
     slot: number;
-    type: NamedApiResource;
+    type: NamedAPIResource;
   }
 
   export interface PokemonFormType {
     slot: number;
-    type: NamedApiResource;
+    type: NamedAPIResource;
   }
 
   export interface PokemonTypePast {
-    generation: NamedApiResource;
+    generation: NamedAPIResource;
     types: PokemonType[];
   }
 
   export interface PokemonHeldItem {
-    item: NamedApiResource;
+    item: NamedAPIResource;
     version_details: PokemonHeldItemVersion[];
   }
 
   export interface PokemonHeldItemVersion {
-    version: NamedApiResource;
+    version: NamedAPIResource;
     rarity: number;
   }
 
   export interface PokemonMove {
-    move: NamedApiResource;
+    move: NamedAPIResource;
     version_group_details: PokemonMoveVersion;
   }
 
   export interface PokemonMoveVersion {
-    move_learn_metthod: NamedApiResource;
-    version_group: NamedApiResource;
+    move_learn_metthod: NamedAPIResource;
+    version_group: NamedAPIResource;
     level_learned_at: number;
   }
 
   export interface PokemonStat {
-    stat: NamedApiResource;
+    stat: NamedAPIResource;
     effort: number;
     base_stat: number;
   }
@@ -95,11 +125,51 @@ export namespace PokeApi {
 
   export interface VersionGameIndex {
     game_index: number;
-    version: NamedApiResource;
+    version: NamedAPIResource;
   }
 
-  export interface NamedApiResource {
+  export interface PokemonSpeciesDexEntry {
+    entry_number: number;
+    pokedex: NamedAPIResource;
+  }
+
+  export interface Name {
+    name: string
+    language: NamedAPIResource;
+  }
+
+  export interface PalParkEncounterArea {
+    base_score: number;
+    rate: number;
+    area: NamedAPIResource;
+  }
+
+  export interface FlavorText {
+    flavor_text: string;
+    language: NamedAPIResource;
+    version: NamedAPIResource;
+  }
+
+  export interface Description {
+    description: string;
+    language: NamedAPIResource;
+  }
+
+  export interface Genus {
+    genus: string;
+    language: NamedAPIResource;
+  }
+
+  export interface PokemonSpeciesVariety {
+    is_default: boolean;
+    pokemon: NamedAPIResource;
+  }
+  export interface NamedAPIResource {
     name: string;
+    url: string;
+  }
+
+  export interface ApiResource {
     url: string;
   }
 }

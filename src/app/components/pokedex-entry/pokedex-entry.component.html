@@ -1,49 +1,50 @@
-<div class="pokedex-pokemon container">
-  <mat-card class="pokedex-pokemon-card">
-    <div class="pokedex-pokemon-card-section">
+<div class="pokedex-entry container">
+  <mat-card class="pokedex-entry-card">
+    <div class="pokedex-entry-card-section center-h center-v">
       <img class="pokemon-image" [src]="pokemonImage">
-      <div class="pokemon-info">
-        <div class="pokemon-name">{{ pokemon.name || 'name'}}</div>
-        <div class="pokemon-id">#{{ pokemon.id || 'id'}}</div>
+      <div class="pokemon-name">
+        <div class="pokemon-name-text">{{ pokemon.name || 'name'}}</div>
+        <div class="pokemon-name-id">#{{ pokemon.id || 'id'}}</div>
       </div>
-      <div class="pokemon-type-container">
+      <div class="pokemon-type">
         @for (type of pokemon.types; track type) {
-          <div class="pokemon-type" [class]="type + '-type'">{{ type }}</div>
+          <div class="pokemon-type-chip" [class]="type + '-type'">{{ type }}</div>
         }
       </div>
     </div>
-    <div class="middle">
-      <div class="pokedex-pokemon-title">ENTRY</div>
+    <div class="pokedex-entry-card-section center-h">
+      <div class="pokedex-entry-title">ENTRY</div>
       <div class="pokemon-description">{{ pokemon.flavorText }}</div>
-      <div class="pokedex-pokemon-title">ABILITIES</div>
-      <div class="pokemon-ability-container">
+      <div class="pokedex-entry-title">ABILITIES</div>
+      <div class="pokemon-ability">
         @for (ability of pokemon.abilities; track ability) {
-          <div class="pokedex-pokemon-value">{{ ability || 'ability' }}</div>
+          <div class="pokedex-entry-value-half">{{ ability || 'ability' }}</div>
         }
         @if(pokemon.hidden_abilities && pokemon.hidden_abilities.length > 0) {
           @for (ability of pokemon.hidden_abilities; track ability) {
-            <div class="pokedex-pokemon-value ability-hidden">
+            <div class="pokedex-entry-value-half ability-hidden">
               {{ ability || 'ability' }}
               <mat-icon fontIcon="visibility_off" class="ability-hidden-icon"></mat-icon>
             </div>
           }
         }
       </div>
-      <div class="pokemon-details">
-        <div class="pokemon-stat">
-          <div class="pokedex-pokemon-title">HEIGHT</div>
-          <div class="pokedex-pokemon-value">{{ pokemon.height || 'height' }}m</div>
+      <div class="pokemon-measurement">
+        <div class="pokemon-measurement-section">
+          <div class="pokedex-entry-title">HEIGHT</div>
+          <div class="pokedex-entry-value">{{ pokemon.height || 'height' }}m</div>
         </div>
-        <div class="pokemon-stat">
-          <div class="pokedex-pokemon-title">WEIGHT</div>
-          <div class="pokedex-pokemon-value">{{ pokemon.weight || 'weight' }}kg</div>
+        <div class="pokemon-measurement-section">
+          <div class="pokedex-entry-title">WEIGHT</div>
+          <div class="pokedex-entry-value">{{ pokemon.weight || 'weight' }}kg</div>
         </div>
       </div>
-      <div class="pokedex-pokemon-title">BASE EXP</div>
-      <div class=""></div>
+      <div class="pokedex-entry-title">BASE EXP</div>
+      <div class="pokedex-entry-value-half">{{ pokemon.baseExp || 'exp'}}</div>
+      <div class="pokedex-entry-title">EVOLUTION</div>
     </div>
-    <div class="right">
-      <div class="pokedex-pokemon-title">BASE STATS</div>
+    <div class="pokedex-entry-card-section">
+      <div class="pokedex-entry-title">BASE STATS</div>
       <div class="pokemon-stat">
         <div class="pokemon-stat-title">HP</div>
         <div class="pokemon-stat-value-container">

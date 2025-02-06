@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
-import { PokeApi } from '../shared/interfaces/pokeapi.interface';
-import { Pokedex } from '../shared/interfaces/pokemon.interface';
+import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
+import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PokemonService {
+export class PokedexService {
 
   constructor(
     private http: HttpClient
@@ -41,8 +41,22 @@ export class PokemonService {
           weight: (pokemonData.weight || 0)/10,
           sprites: pokemonData.sprites,
           flavorText,
+          baseExp: pokemonData.base_experience,
+          evolutionTree: pokemonSpeciesData.evolution_chain?.url,
         } as Pokedex.Pokemon;
         return formattedPokemon;
+      }),
+      switchMap((value: Pokedex.Pokemon) => {
+        return this.getPokemonEvolution(value.evolutionTree as string).pipe(
+          map((evolutionData) => {
+            const pokemonEvolutions = this.getEvolutions(evolutionData as PokeApi.EvolutionChainResponse);
+            console.log(pokemonEvolutions);
+            return {
+              ...value,
+              evolutionTree: pokemonEvolutions,
+            }
+          })
+        );
       })
     );
   }
@@ -58,6 +72,10 @@ export class PokemonService {
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon-species/${cleanedPokemon}`;
 
+    return this.http.get(url);
+  }
+
+  getPokemonEvolution(url: string): Observable<Partial<PokeApi.EvolutionChainResponse>> {
     return this.http.get(url);
   }
 
@@ -91,6 +109,31 @@ export class PokemonService {
     });
 
     return typeStrings;
+  }
+
+  private getEvolutions(evolutions: PokeApi.EvolutionChainResponse): Pokedex.Pokemon[] {
+    const pokemonEvolutions: Pokedex.Pokemon[] = [];
+    console.log(evolutions);
+    let currentChain = evolutions.chain;
+    let canEvolve = true;
+
+    while (canEvolve) {
+      pokemonEvolutions.push({
+        name: currentChain.species.name,
+        id: this.extractId(currentChain.species.url),
+      });
+
+      if (currentChain.evolves_to.length > 0) {
+        currentChain = currentChain.evolves_to[0];
+      } else {
+        canEvolve = false;
+      }
+    }
+    return pokemonEvolutions;
+  }
+
+  private extractId(url: string): number {
+    return parseInt(url.replace('https://', '').split('/')[4]);
   }
 
   private cleanFlavorText(flavorText: string | undefined): string {

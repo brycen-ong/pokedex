@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { PokemonService } from '../../services/pokemon.service';
+import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-pokedex-pokemon',
+  selector: 'app-pokedex-entry',
   imports: [
     MatCardModule,
     MatIconModule,
     RouterModule,
   ],
-  templateUrl: './pokedex-pokemon.component.html',
-  styleUrl: './pokedex-pokemon.component.scss'
+  templateUrl: './pokedex-entry.component.html',
+  styleUrl: './pokedex-entry.component.scss'
 })
-export class PokedexPokemonComponent implements OnInit {
+export class PokedexEntryComponent implements OnInit {
   pokemonQuery: string | null = '';
   pokemon: Pokedex.Pokemon = {};
   sprites: (string | undefined)[] = [];
@@ -33,12 +33,12 @@ export class PokedexPokemonComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private pokemonService: PokemonService,
+    private pokedexService: PokedexService,
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.pokemonQuery = this.route.snapshot.paramMap.get('id');
-    this.pokemon = await firstValueFrom(this.pokemonService.getPokemonData(this.pokemonQuery as string));
+    this.pokemon = await firstValueFrom(this.pokedexService.getPokemonData(this.pokemonQuery as string));
     this.sprites = Object.values(this.pokemon.sprites as PokeApi.PokemonSprites).filter((value) => typeof value === 'string');
     const backUpImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.pokemon.id}.png`
     this.pokemonImage = this.pokemon.sprites?.other['official-artwork'].front_default ?? backUpImage;

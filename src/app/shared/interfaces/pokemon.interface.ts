@@ -19,5 +19,7 @@ export namespace Pokedex {
     weight?: number;
     sprites?: PokeApi.PokemonSprites;
     flavorText?: string;
+    baseExp?: number;
+    evolutionTree?: string | Pokemon[];
   }
 }

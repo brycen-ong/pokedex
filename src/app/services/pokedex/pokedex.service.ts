@@ -51,8 +51,6 @@ export class PokedexService {
         return this.getPokemonEvolution(value.evolutionTree as string).pipe(
           map((evolutionData) => {
             const evolutionTree = this.getEvolutions(evolutionData.chain as PokeApi.ChainLink);
-
-            console.log(evolutionTree);
             return {
               ...value,
               evolutionTree,

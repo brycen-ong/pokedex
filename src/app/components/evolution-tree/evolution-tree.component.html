@@ -1,10 +1,11 @@
 <div class="evolution-tree">
-  <img [src]="pokemonImage" class="evolution-img">
-  <div>{{ pokemonName }}</div>
+  <div class="evolution-node" (click)="goToEntry(pokemonName)">
+    <img [src]="pokemonImage" class="evolution-img">
+    <div class="evolution-name">{{ pokemonName }}</div>
+  </div>
   @if (nextEvolutions && nextEvolutions.length > 0) {
     @for (nextEvolution of nextEvolutions; track nextEvolution) {
-      next
-      {{ nextEvolution.name }}
+      <mat-icon fontIcon="arrow_forward" class="evolution-arrow"></mat-icon>
       <app-evolution-tree [evolutionTree]="nextEvolution"></app-evolution-tree>
     }
   }

@@ -1,9 +1,13 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-evolution-tree',
-  imports: [],
+  imports: [
+    MatIconModule,
+  ],
   templateUrl: './evolution-tree.component.html',
   styleUrl: './evolution-tree.component.scss'
 })
@@ -14,10 +18,21 @@ export class EvolutionTreeComponent implements OnChanges {
   pokemonName?: string;
   nextEvolutions?: Pokedex.Pokemon[];
 
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
   ngOnChanges(): void {
     this.currentPokemon = (this.evolutionTree as Pokedex.Pokemon);
     this.pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${(this.evolutionTree as Pokedex.Pokemon)?.id}.png`;
     this.pokemonName = (this.evolutionTree as Pokedex.Pokemon)?.name as string;
     this.nextEvolutions = (this.evolutionTree as Pokedex.Pokemon)?.evolutionTree as Pokedex.Pokemon[];
+  }
+
+  goToEntry(pokemonName: string | undefined): void {
+    if (pokemonName) {
+      this.router.navigate([`../${pokemonName}`], { relativeTo: this.route, replaceUrl: true })
+    }
   }
 }

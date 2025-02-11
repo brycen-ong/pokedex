@@ -51,6 +51,8 @@ export class PokedexService {
         return this.getPokemonEvolution(value.evolutionTree as string).pipe(
           map((evolutionData) => {
             const evolutionTree = this.getEvolutions(evolutionData.chain as PokeApi.ChainLink);
+
+            console.log(evolutionTree);
             return {
               ...value,
               evolutionTree,
@@ -111,21 +113,15 @@ export class PokedexService {
     return typeStrings;
   }
 
-  private getEvolutions(evolutionChain: PokeApi.ChainLink) {
+  private getEvolutions(evolutionChain: PokeApi.ChainLink): Pokedex.Pokemon | Pokedex.Pokemon[] {
     const evolutionTree: Pokedex.Pokemon | Pokedex.Pokemon[] = {
       name: evolutionChain.species.name,
       id: this.extractId(evolutionChain.species.url),
       evolutionTree: []
     };
-    console.log('base level: ', evolutionTree);
-    
+
     evolutionChain.evolves_to.forEach((evolution) => {
-      console.log(`evolution from ${evolutionTree.name}`, evolution);
-      (evolutionTree.evolutionTree as Pokedex.Pokemon[]).push({
-        name: evolution.species.name,
-        id: this.extractId(evolutionChain.species.url),
-        evolutionTree: this.getEvolutions(evolution),
-      })
+      (evolutionTree.evolutionTree as Pokedex.Pokemon[]).push(this.getEvolutions(evolution) as Pokedex.Pokemon)
     });
 
     return evolutionTree;

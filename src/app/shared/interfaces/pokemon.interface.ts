@@ -20,6 +20,6 @@ export namespace Pokedex {
     sprites?: PokeApi.PokemonSprites;
     flavorText?: string;
     baseExp?: number;
-    evolutionTree?: string | Pokemon[];
+    evolutionTree?: string | Pokemon | Pokemon[];
   }
 }

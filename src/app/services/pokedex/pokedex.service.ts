@@ -21,7 +21,7 @@ export class PokedexService {
       map(([pokemonData, pokemonSpeciesData]) => {
         const abilities  = this.getAbilities(pokemonData.abilities);
         const types = this.getTypes(pokemonData.types);
-        const flavorText = this.cleanFlavorText(pokemonSpeciesData.flavor_text_entries?.[0].flavor_text);
+        const flavorText = this.cleanFlavorText(pokemonSpeciesData.flavor_text_entries?.find((flavorText) => flavorText.language.name === 'en')?.flavor_text);
 
         const formattedPokemon: Pokedex.Pokemon = {
           id: pokemonData.id,
@@ -47,13 +47,13 @@ export class PokedexService {
         return formattedPokemon;
       }),
       switchMap((value: Pokedex.Pokemon) => {
+
         return this.getPokemonEvolution(value.evolutionTree as string).pipe(
           map((evolutionData) => {
-            const pokemonEvolutions = this.getEvolutions(evolutionData as PokeApi.EvolutionChainResponse);
-            console.log(pokemonEvolutions);
+            const evolutionTree = this.getEvolutions(evolutionData.chain as PokeApi.ChainLink);
             return {
               ...value,
-              evolutionTree: pokemonEvolutions,
+              evolutionTree,
             }
           })
         );
@@ -111,25 +111,24 @@ export class PokedexService {
     return typeStrings;
   }
 
-  private getEvolutions(evolutions: PokeApi.EvolutionChainResponse): Pokedex.Pokemon[] {
-    const pokemonEvolutions: Pokedex.Pokemon[] = [];
-    console.log(evolutions);
-    let currentChain = evolutions.chain;
-    let canEvolve = true;
+  private getEvolutions(evolutionChain: PokeApi.ChainLink) {
+    const evolutionTree: Pokedex.Pokemon | Pokedex.Pokemon[] = {
+      name: evolutionChain.species.name,
+      id: this.extractId(evolutionChain.species.url),
+      evolutionTree: []
+    };
+    console.log('base level: ', evolutionTree);
+    
+    evolutionChain.evolves_to.forEach((evolution) => {
+      console.log(`evolution from ${evolutionTree.name}`, evolution);
+      (evolutionTree.evolutionTree as Pokedex.Pokemon[]).push({
+        name: evolution.species.name,
+        id: this.extractId(evolutionChain.species.url),
+        evolutionTree: this.getEvolutions(evolution),
+      })
+    });
 
-    while (canEvolve) {
-      pokemonEvolutions.push({
-        name: currentChain.species.name,
-        id: this.extractId(currentChain.species.url),
-      });
-
-      if (currentChain.evolves_to.length > 0) {
-        currentChain = currentChain.evolves_to[0];
-      } else {
-        canEvolve = false;
-      }
-    }
-    return pokemonEvolutions;
+    return evolutionTree;
   }
 
   private extractId(url: string): number {

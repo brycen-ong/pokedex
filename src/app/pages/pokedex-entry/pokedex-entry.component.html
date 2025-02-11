@@ -41,8 +41,12 @@
       </div>
       <div class="pokedex-entry-title">BASE EXP</div>
       <div class="pokedex-entry-value-half">{{ pokemon.baseExp || 'exp'}}</div>
-      <div class="pokedex-entry-title">EVOLUTION</div>
-      <app-evolution-tree [evolutionTree]="pokemon.evolutionTree"></app-evolution-tree>
+      @if (hasEvolutions) {
+        <div class="pokedex-entry-title">EVOLUTION TREE</div>
+        <div class="pokemon-evolution-tree">
+          <app-evolution-tree [evolutionTree]="pokemon.evolutionTree"></app-evolution-tree>
+        </div>
+      }
     </div>
     <div class="pokedex-entry-card-section">
       <div class="pokedex-entry-title">BASE STATS</div>

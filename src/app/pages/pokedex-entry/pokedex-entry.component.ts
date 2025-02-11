@@ -6,6 +6,7 @@ import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { EvolutionTreeComponent } from "../../components/evolution-tree/evolution-tree.component";
 
 @Component({
   selector: 'app-pokedex-entry',
@@ -13,7 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatIconModule,
     RouterModule,
-  ],
+    EvolutionTreeComponent
+],
   templateUrl: './pokedex-entry.component.html',
   styleUrl: './pokedex-entry.component.scss'
 })

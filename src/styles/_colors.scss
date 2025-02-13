@@ -19,9 +19,24 @@ $types: (
   water: #2980EF,
 );
 
+$stats: (
+  hp: #69DC12,
+  atk: #EFCC18,
+  def: #E86412,
+  spa: #14C3F1,
+  spd: #4A6ADF,
+  spe: #D51DAD,
+);
+
 @each $key, $color in $types {
   .#{$key}-type {
     background-color: #{$color};
     color: white;
+  }
+}
+
+@each $key, $color in $stats {
+  .#{$key}-stat {
+    background-color: #{$color};
   }
 }

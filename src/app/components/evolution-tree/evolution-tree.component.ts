@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +23,8 @@ export class EvolutionTreeComponent implements OnChanges {
     private route: ActivatedRoute
   ) {}
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     this.currentPokemon = (this.evolutionTree as Pokedex.Pokemon);
     this.pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${(this.evolutionTree as Pokedex.Pokemon)?.id}.png`;
     this.pokemonName = (this.evolutionTree as Pokedex.Pokemon)?.name as string;

@@ -1,0 +1,17 @@
+<div class="pokemon-stat">
+  <div class="pokemon-stat-title">{{ pokemonStatType }}</div>
+  <div class="pokemon-stat-value-container">
+    <div class="pokemon-stat-value-title">{{ pokemonStatValue || '0' }}</div>
+    <div class="pokemon-stat-bar-container">
+      <div class="pokemon-stat-bar-divider"></div>
+      <div class="pokemon-stat-bar-divider"></div>
+      <div class="pokemon-stat-bar-divider"></div>
+      <div class="pokemon-stat-bar-divider"></div>
+      <div
+        class="pokemon-stat-bar-value"
+        [class]="pokemonStatType + '-stat'"
+        [style.width]="pokemonStatWidth"
+      ></div>
+    </div>
+  </div>
+</div>

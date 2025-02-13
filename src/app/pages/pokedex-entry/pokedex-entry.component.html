@@ -1,133 +1,71 @@
 <div class="pokedex-entry container">
   <mat-card class="pokedex-entry-card">
-    <div class="pokedex-entry-card-section center-h center-v">
+    <div class="pokedex-entry-section center">
       <img class="pokemon-image" [src]="pokemonImage">
-      <div class="pokemon-name">
-        <div class="pokemon-name-text">{{ pokemon.name || 'name'}}</div>
-        <div class="pokemon-name-id">#{{ pokemon.id || 'id'}}</div>
+      <div class="pokedex-entry-subsection center">
+        <div class="pokemon-name">{{ pokemon.name || 'name'}}</div>
+        <div class="pokemon-id">#{{ pokemon.id || 'id'}}</div>
       </div>
-      <div class="pokemon-type">
+      <div class="pokedex-entry-subsection">
         @for (type of pokemon.types; track type) {
-          <div class="pokemon-type-chip" [class]="type + '-type'">{{ type }}</div>
+          <div class="pokemon-type" [class]="type + '-type'">{{ type }}</div>
         }
       </div>
     </div>
-    <div class="pokedex-entry-card-section center-h">
+    <div class="pokedex-entry-section">
       <div class="pokedex-entry-title">ENTRY</div>
-      <div class="pokemon-description">{{ pokemon.flavorText }}</div>
+      <div class="pokedex-entry-subsection col">
+        <div class="pokemon-description">{{ pokemon.flavorText }}</div>
+      </div>
       <div class="pokedex-entry-title">ABILITIES</div>
-      <div class="pokemon-ability">
+      <div class="pokedex-entry-subsection space-between wrap">
         @for (ability of pokemon.abilities; track ability) {
-          <div class="pokedex-entry-value-half">{{ ability || 'ability' }}</div>
+          <div class="pokedex-entry-division">
+            <div class="pokedex-entry-value">{{ ability || 'ability' }}</div>
+          </div>
         }
         @if(pokemon.hidden_abilities && pokemon.hidden_abilities.length > 0) {
           @for (ability of pokemon.hidden_abilities; track ability) {
-            <div class="pokedex-entry-value-half ability-hidden">
-              {{ ability || 'ability' }}
-              <mat-icon fontIcon="visibility_off" class="ability-hidden-icon"></mat-icon>
+            <div class="pokedex-entry-division">
+              <div class="pokedex-entry-value ability-hidden">
+                {{ ability || 'ability' }}
+                <mat-icon fontIcon="visibility_off" class="ability-hidden-icon"></mat-icon>
+              </div>
             </div>
           }
         }
       </div>
-      <div class="pokemon-measurement">
-        <div class="pokemon-measurement-section">
+      <div class="pokedex-entry-subsection space-between">
+        <div class="pokedex-entry-division">
           <div class="pokedex-entry-title">HEIGHT</div>
           <div class="pokedex-entry-value">{{ pokemon.height || 'height' }}m</div>
         </div>
-        <div class="pokemon-measurement-section">
+        <div class="pokedex-entry-division">
           <div class="pokedex-entry-title">WEIGHT</div>
           <div class="pokedex-entry-value">{{ pokemon.weight || 'weight' }}kg</div>
         </div>
       </div>
       <div class="pokedex-entry-title">BASE EXP</div>
-      <div class="pokedex-entry-value-half">{{ pokemon.baseExp || 'exp'}}</div>
+      <div class="pokedex-entry-subsection">
+        <div class="pokedex-entry-division">
+          <div class="pokedex-entry-value">{{ pokemon.baseExp || 'exp'}}</div>
+        </div>
+      </div>
       @if (hasEvolutions) {
         <div class="pokedex-entry-title">EVOLUTION TREE</div>
-        <div class="pokemon-evolution-tree">
-          <app-evolution-tree [evolutionTree]="pokemon.evolutionTree"></app-evolution-tree>
-        </div>
-      }
+          <div class="pokedex-entry-subsection">
+            <app-evolution-tree [evolutionTree]="pokemon.evolutionTree"></app-evolution-tree>
+          </div>
+        }
     </div>
-    <div class="pokedex-entry-card-section">
+    <div class="pokedex-entry-section">
       <div class="pokedex-entry-title">BASE STATS</div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">HP</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.hp || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value hp" [style.width]="pokemonStatWidths.hp"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">ATK</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.atk || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value atk" [style.width]="pokemonStatWidths.atk"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">DEF</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.def || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value def" [style.width]="pokemonStatWidths.def"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">SPA</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.spa || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value spa" [style.width]="pokemonStatWidths.spa"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">SPD</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.spd || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value spd" [style.width]="pokemonStatWidths.spd"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pokemon-stat">
-        <div class="pokemon-stat-title">SPE</div>
-        <div class="pokemon-stat-value-container">
-          <div class="pokemon-stat-value-title">{{ pokemon.stats?.spe || '0' }}</div>
-          <div class="pokemon-stat-bar-container">
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-divider"></div>
-            <div class="pokemon-stat-bar-value spe" [style.width]="pokemonStatWidths.spe"></div>
-          </div>
-        </div>
-      </div>
+      <app-pokemon-stat pokemonStatType="hp" [pokemonStatValue]="pokemon.stats?.hp"></app-pokemon-stat>
+      <app-pokemon-stat pokemonStatType="atk" [pokemonStatValue]="pokemon.stats?.atk"></app-pokemon-stat>
+      <app-pokemon-stat pokemonStatType="def" [pokemonStatValue]="pokemon.stats?.def"></app-pokemon-stat>
+      <app-pokemon-stat pokemonStatType="spa" [pokemonStatValue]="pokemon.stats?.spa"></app-pokemon-stat>
+      <app-pokemon-stat pokemonStatType="spd" [pokemonStatValue]="pokemon.stats?.spd"></app-pokemon-stat>
+      <app-pokemon-stat pokemonStatType="spe" [pokemonStatValue]="pokemon.stats?.spe"></app-pokemon-stat>
     </div>
   </mat-card>
 </div>

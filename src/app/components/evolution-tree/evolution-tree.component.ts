@@ -24,11 +24,12 @@ export class EvolutionTreeComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    this.currentPokemon = (this.evolutionTree as Pokedex.Pokemon);
-    this.pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${(this.evolutionTree as Pokedex.Pokemon)?.id}.png`;
-    this.pokemonName = (this.evolutionTree as Pokedex.Pokemon)?.name as string;
-    this.nextEvolutions = (this.evolutionTree as Pokedex.Pokemon)?.evolutionTree as Pokedex.Pokemon[];
+    if(changes['evolutionTree']) {
+      this.currentPokemon = (this.evolutionTree as Pokedex.Pokemon);
+      this.pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${(this.evolutionTree as Pokedex.Pokemon)?.id}.png`;
+      this.pokemonName = (this.evolutionTree as Pokedex.Pokemon)?.name as string;
+      this.nextEvolutions = (this.evolutionTree as Pokedex.Pokemon)?.evolutionTree as Pokedex.Pokemon[];
+    }
   }
 
   goToEntry(pokemonName: string | undefined): void {

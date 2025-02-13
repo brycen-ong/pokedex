@@ -1,9 +1,4 @@
 <div class="pokedex container">
   <div class="pokedex-header">Look up a Pokemon!</div>
-  <div class="pokedex-input-container">
-    <input class="pokedex-input" [(ngModel)]="pokemonInput">
-    <button mat-flat-button class="pokedex-search button" (click)="searchPokemon()">
-      <mat-icon [fontIcon]="'search'" class="pokedex-search-icon"></mat-icon>
-    </button>
-  </div>
+  <app-pokedex-search-bar (searchEvent)="searchPokemon($event)"></app-pokedex-search-bar>
 </div>

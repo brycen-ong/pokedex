@@ -1,32 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PokedexSearchBarComponent } from "../../components/pokedex-search-bar/pokedex-search-bar.component";
 
 @Component({
   selector: 'app-pokedex',
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    FormsModule,
-  ],
+    PokedexSearchBarComponent
+],
   templateUrl: './pokedex.component.html',
   styleUrl: './pokedex.component.scss'
 })
 export class PokedexComponent {
-  pokemonInput: string = '';
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
   ) {}
 
-  async searchPokemon(): Promise<void> {
-    this.router.navigate([`./${this.pokemonInput.toLocaleLowerCase()}`], { relativeTo: this.route });
+  async searchPokemon(searchKey: string | null): Promise<void> {
+    if (searchKey) {
+      this.router.navigate([`./${searchKey.toLocaleLowerCase()}`], { relativeTo: this.route });
+    }
   }
 }

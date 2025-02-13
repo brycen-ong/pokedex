@@ -1,0 +1,6 @@
+<form class="pokedex-search-bar" (ngSubmit)="search()">
+  <input class="pokedex-search-bar-input" [formControl]="searchKey">
+  <button mat-flat-button class="pokedex-search-bar-button" type="submit">
+    <mat-icon [fontIcon]="'search'" class="pokedex-search-bar-button-icon"></mat-icon>
+  </button>
+</form>

@@ -1,0 +1,69 @@
+<mat-card class="pokemon-card">
+  <div class="pokemon-card-section center">
+    <img class="pokemon-image" [src]="pokemonImage">
+    <div class="pokemon-card-subsection center">
+      <div class="pokemon-name">{{ pokemon?.name || 'name'}}</div>
+      <div class="pokemon-id">#{{ pokemon?.id || 'id'}}</div>
+    </div>
+    <div class="pokemon-card-subsection">
+      @for (type of pokemon?.types; track type) {
+        <div class="pokemon-type" [class]="type + '-type'">{{ type }}</div>
+      }
+    </div>
+  </div>
+  <div class="pokemon-card-section">
+    <div class="pokemon-card-title">ENTRY</div>
+    <div class="pokemon-card-subsection col">
+      <div class="pokemon-description">{{ pokemon?.flavorText }}</div>
+    </div>
+    <div class="pokemon-card-title">ABILITIES</div>
+    <div class="pokemon-card-subsection space-between wrap">
+      @for (ability of pokemon?.abilities; track ability) {
+        <div class="pokemon-card-division">
+          <div class="pokemon-card-value">{{ ability || 'ability' }}</div>
+        </div>
+      }
+      @if(pokemon?.hidden_abilities && (pokemon?.hidden_abilities ?? []).length > 0) {
+        @for (ability of pokemon?.hidden_abilities; track ability) {
+          <div class="pokemon-card-division">
+            <div class="pokemon-card-value ability-hidden">
+              {{ ability || 'ability' }}
+              <mat-icon fontIcon="visibility_off" class="ability-hidden-icon"></mat-icon>
+            </div>
+          </div>
+        }
+      }
+    </div>
+    <div class="pokemon-card-subsection space-between">
+      <div class="pokemon-card-division">
+        <div class="pokemon-card-title">HEIGHT</div>
+        <div class="pokemon-card-value">{{ pokemon?.height || 'height' }}m</div>
+      </div>
+      <div class="pokemon-card-division">
+        <div class="pokemon-card-title">WEIGHT</div>
+        <div class="pokemon-card-value">{{ pokemon?.weight || 'weight' }}kg</div>
+      </div>
+    </div>
+    <div class="pokemon-card-title">BASE EXP</div>
+    <div class="pokemon-card-subsection">
+      <div class="pokemon-card-division">
+        <div class="pokemon-card-value">{{ pokemon?.baseExp || 'exp'}}</div>
+      </div>
+    </div>
+    @if (hasEvolutions) {
+      <div class="pokemon-card-title">EVOLUTION TREE</div>
+        <div class="pokemon-card-subsection">
+          <app-evolution-tree [evolutionTree]="pokemon?.evolutionTree"></app-evolution-tree>
+        </div>
+      }
+  </div>
+  <div class="pokemon-card-section">
+    <div class="pokemon-card-title">BASE STATS</div>
+    <app-pokemon-stat pokemonStatType="hp" [pokemonStatValue]="pokemon?.stats?.hp"></app-pokemon-stat>
+    <app-pokemon-stat pokemonStatType="atk" [pokemonStatValue]="pokemon?.stats?.atk"></app-pokemon-stat>
+    <app-pokemon-stat pokemonStatType="def" [pokemonStatValue]="pokemon?.stats?.def"></app-pokemon-stat>
+    <app-pokemon-stat pokemonStatType="spa" [pokemonStatValue]="pokemon?.stats?.spa"></app-pokemon-stat>
+    <app-pokemon-stat pokemonStatType="spd" [pokemonStatValue]="pokemon?.stats?.spd"></app-pokemon-stat>
+    <app-pokemon-stat pokemonStatType="spe" [pokemonStatValue]="pokemon?.stats?.spe"></app-pokemon-stat>
+  </div>
+</mat-card>

@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 export class PokedexService {
 
   constructor(
-    private http: HttpClient
+    private cacheService: CacheService,
   ) { }
 
   getPokemonData(pokemon: string): Observable<Pokedex.Pokemon> {
@@ -60,23 +60,50 @@ export class PokedexService {
     );
   }
 
-  getPokemon(pokemon: string): Observable<Partial<PokeApi.PokemonResponse>> {
+  getAllPokemonData(): Observable<PokeApi.NamedAPIResource[]> {
+    return this.getAllPokemon().pipe(
+      map((data) => {
+        return data.results;
+      })
+    );
+  }
+
+  getAllPokemonDataPaginated(offset: number, limit = 6,): Observable<PokeApi.AllPokemonResponse> {
+
+    return this.getAllPokemonPaginated(offset, limit);
+  }
+
+  private getPokemon(pokemon: string): Observable<PokeApi.PokemonResponse> {
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon/${cleanedPokemon}`;
     
-    return this.http.get(url);
+    return this.cacheService.get(url);
   }
 
-  getPokemonSpecies(pokemon: string): Observable<Partial<PokeApi.PokemonSpeciesResponse>> {
+  private getAllPokemon(): Observable<PokeApi.AllPokemonResponse> {
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=2000`;
+
+    return this.cacheService.get(url);
+  }
+
+  private getAllPokemonPaginated(offset: number, limit: number): Observable<PokeApi.AllPokemonResponse> {
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
+
+    return this.cacheService.get(url);
+  }
+
+  private getPokemonSpecies(pokemon: string): Observable<PokeApi.PokemonSpeciesResponse> {
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon-species/${cleanedPokemon}`;
 
-    return this.http.get(url);
+    return this.cacheService.get(url);
   }
 
-  getPokemonEvolution(url: string): Observable<Partial<PokeApi.EvolutionChainResponse>> {
-    return this.http.get(url);
+  private getPokemonEvolution(url: string): Observable<PokeApi.EvolutionChainResponse> {
+    return this.cacheService.get(url);
   }
+
+  // util functions
 
   private formatString(string: string): string {
     return string

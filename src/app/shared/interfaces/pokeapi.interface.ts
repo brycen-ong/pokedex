@@ -21,6 +21,13 @@ export namespace PokeApi {
     types: PokemonType[];
   }
 
+  export interface AllPokemonResponse {
+    count: number;
+    next: string;
+    previous: string;
+    results: NamedAPIResource[];
+  }
+
   export interface PokemonSpeciesResponse {
     id: number;
     name: string;

@@ -32,7 +32,7 @@ export class PokedexEntryComponent implements OnInit, OnDestroy {
     this.routerSub = this.route.params.subscribe(async () => {
       this.pokemonQuery = this.route.snapshot.paramMap.get('id');
       this.pokemon = await firstValueFrom(this.pokedexService.getPokemonData(this.pokemonQuery as string));
-    })
+    });
   }
 
   async ngOnDestroy(): Promise<void> {

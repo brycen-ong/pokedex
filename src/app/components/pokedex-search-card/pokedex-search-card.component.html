@@ -1,1 +1,15 @@
-<p>pokedex-search-card works!</p>
+<mat-card class="pokedex-search-card card" [class]="pokemonPrimaryType + '-type'">
+  <div class="pokedex-search-card-bg" [class]="pokemonPrimaryType + '-type'"></div>
+  <div class="pokedex-search-card-section center">
+    <img class="pokedex-search-card-image" [src]="pokemonImage">
+    <div class="pokedex-search-card-subsection center">
+      <div class="pokedex-search-card-name">{{ pokemon?.name }}</div>
+      <div class="pokedex-search-card-id">#{{ pokemon?.id }}</div>
+    </div>
+    <div class="pokedex-search-card-subsection">
+      @for (type of pokemon?.types; track type) {
+        <div class="pokedex-search-card-type" [class]="type + '-type'">{{ type }}</div>
+      }
+    </div>
+  </div>
+</mat-card>

@@ -5,12 +5,14 @@ import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { firstValueFrom } from 'rxjs';
 import { PokedexSearchCardComponent } from '../../components/pokedex-search-card/pokedex-search-card.component';
+import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll/infinite-scroll.directive';
 
 @Component({
   selector: 'app-pokedex',
   imports: [
     PokedexSearchBarComponent,
     PokedexSearchCardComponent,
+    InfiniteScrollDirective,
 ],
   templateUrl: './pokedex.component.html',
   styleUrl: './pokedex.component.scss'
@@ -34,5 +36,9 @@ export class PokedexComponent implements OnInit {
     if (searchKey) {
       this.router.navigate([`./${searchKey.toLocaleLowerCase()}`], { relativeTo: this.route });
     }
+  }
+
+  loadNext(event: any) {
+    console.log('loadNext: ', event);
   }
 }

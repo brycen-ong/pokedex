@@ -1,4 +1,4 @@
-<div class="pokedex container">
+<div class="pokedex container" appInfiniteScroll (endReached)="loadNext($event)">
   <div class="pokedex-header">Look up a Pokemon!</div>
   <app-pokedex-search-bar (searchEvent)="searchPokemon($event)"></app-pokedex-search-bar>
   <div class="pokedex-search-results">

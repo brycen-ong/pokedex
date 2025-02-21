@@ -26,7 +26,6 @@ export class PokedexSearchCardComponent implements OnChanges {
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes['pokemonResource']) {
       this.pokemon = await firstValueFrom(this.pokedexService.getPokemonData(this.pokemonResource?.name as string));
-      console.log(this.pokemon.sprites);
       this.pokemonImage = this.pokemon?.sprites?.front_default;
       this.pokemonPrimaryType = this.pokemon?.types?.[0];
     }

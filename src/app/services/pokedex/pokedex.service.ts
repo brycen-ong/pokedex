@@ -68,7 +68,7 @@ export class PokedexService {
     );
   }
 
-  getAllPokemonDataPaginated(offset: number, limit = 6,): Observable<PokeApi.AllPokemonResponse> {
+  getAllPokemonDataPaginated(offset: number, limit = 100,): Observable<PokeApi.AllPokemonResponse> {
 
     return this.getAllPokemonPaginated(offset, limit);
   }

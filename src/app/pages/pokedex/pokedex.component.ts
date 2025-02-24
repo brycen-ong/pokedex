@@ -6,6 +6,7 @@ import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { firstValueFrom } from 'rxjs';
 import { PokedexSearchCardComponent } from '../../components/pokedex-search-card/pokedex-search-card.component';
 import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll/infinite-scroll.directive';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-pokedex',
@@ -13,6 +14,7 @@ import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll
     PokedexSearchBarComponent,
     PokedexSearchCardComponent,
     InfiniteScrollDirective,
+    MatProgressSpinnerModule,
 ],
   templateUrl: './pokedex.component.html',
   styleUrl: './pokedex.component.scss'

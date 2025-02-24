@@ -31,4 +31,15 @@
       }
     }
   }
+
+  .pokedex-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+
+    > * {
+      height: 50px !important;
+    }
+  }
 }

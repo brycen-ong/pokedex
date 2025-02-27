@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { CacheService } from '../cache/cache.service';
@@ -13,10 +13,10 @@ export class PokedexService {
     private cacheService: CacheService,
   ) { }
 
-  getPokemonData(pokemon: string): Observable<Pokedex.Pokemon> {
+  getPokemonData(pokemon: string, urlOverride?: string): Observable<Pokedex.Pokemon> {
     return forkJoin([
-      this.getPokemon(pokemon),
-      this.getPokemonSpecies(pokemon),
+      this.getPokemon(pokemon, urlOverride),
+      this.getPokemonSpecies(pokemon, urlOverride),
     ]).pipe(
       map(([pokemonData, pokemonSpeciesData]) => {
         const abilities  = this.getAbilities(pokemonData.abilities);
@@ -60,29 +60,20 @@ export class PokedexService {
     );
   }
 
-  getAllPokemonData(): Observable<PokeApi.NamedAPIResource[]> {
-    return this.getAllPokemon().pipe(
-      map((data) => {
-        return data.results;
-      })
-    );
-  }
-
   getAllPokemonDataPaginated(offset: number, limit = 100,): Observable<PokeApi.AllPokemonResponse> {
-
     return this.getAllPokemonPaginated(offset, limit);
   }
 
-  private getPokemon(pokemon: string): Observable<PokeApi.PokemonResponse> {
+  private getPokemon(pokemon: string, urlOverride?: string): Observable<PokeApi.PokemonResponse> {
+    if (urlOverride) {
+      const id = this.extractId(urlOverride);
+      const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+      return this.cacheService.get(url);
+    }
+
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon/${cleanedPokemon}`;
     
-    return this.cacheService.get(url);
-  }
-
-  private getAllPokemon(): Observable<PokeApi.AllPokemonResponse> {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=2000`;
-
     return this.cacheService.get(url);
   }
 
@@ -92,7 +83,13 @@ export class PokedexService {
     return this.cacheService.get(url);
   }
 
-  private getPokemonSpecies(pokemon: string): Observable<PokeApi.PokemonSpeciesResponse> {
+  private getPokemonSpecies(pokemon: string, urlOverride?: string): Observable<PokeApi.PokemonSpeciesResponse> {
+    if (urlOverride) {
+      const id = this.extractId(urlOverride);
+      const url = `https://pokeapi.co/api/v2/pokemon-species/${id}`
+      return this.cacheService.get(url);
+    }
+
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon-species/${cleanedPokemon}`;
 

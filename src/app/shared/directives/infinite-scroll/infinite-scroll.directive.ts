@@ -1,15 +1,14 @@
-import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
-import { Debounce } from '../../decorators/debounce.decorator';
+import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Directive({
   selector: '[appInfiniteScroll]'
 })
 export class InfiniteScrollDirective {
   @Output() endReached = new EventEmitter<string>();
+  @Input() canLoad = false;
   currentPosition = window.scrollY;
 
   @HostListener('window:scroll', ['$event'])
-  @Debounce()
   onScroll() {
     const margin = 10;
     const scrolledDistance = window.scrollY + window.innerHeight;
@@ -18,7 +17,7 @@ export class InfiniteScrollDirective {
 
     // if scroll down
     if (scroll > this.currentPosition) {
-      if (scrolledDistance >= totalHeight) {
+      if (scrolledDistance >= totalHeight && this.canLoad) {
         this.endReached.emit('end');
       }
     }

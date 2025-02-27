@@ -1,4 +1,4 @@
-<div class="pokedex container" appInfiniteScroll (endReached)="loadNext($event)">
+<div class="pokedex container" appInfiniteScroll (endReached)="loadNext($event)" [canLoad]="!isLoading">
   <div class="pokedex-header">Look up a Pokemon!</div>
   <app-pokedex-search-bar (searchEvent)="searchPokemon($event)"></app-pokedex-search-bar>
   <div class="pokedex-search-results">
@@ -6,7 +6,9 @@
       <app-pokedex-search-card [pokemonResource]="pokemon"></app-pokedex-search-card>
     }
   </div>
-  <div class="pokedex-spinner">
-    <mat-spinner></mat-spinner>
-  </div>
+  @if (!atLimit) {
+    <div class="pokedex-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
 </div>

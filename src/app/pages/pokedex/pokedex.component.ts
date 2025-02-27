@@ -20,8 +20,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './pokedex.component.scss'
 })
 export class PokedexComponent implements OnInit {
-  paginatedAllPokemon?: PokeApi.AllPokemonResponse;
-  allPokemon?: PokeApi.NamedAPIResource[];
+  allPokemon?: PokeApi.NamedAPIResource[] = [];
+  isLoading: boolean = false;
+  offset: number = 0;
+  limit: number = 360;
+  atLimit: boolean = false;
 
   constructor(
     private router: Router,
@@ -30,8 +33,7 @@ export class PokedexComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.paginatedAllPokemon = await firstValueFrom(this.pokedexService.getAllPokemonDataPaginated(0));
-    this.allPokemon = this.paginatedAllPokemon.results;
+    await this.getPokemonDataPaginated();
   }
 
   async searchPokemon(searchKey: string | null): Promise<void> {
@@ -40,7 +42,24 @@ export class PokedexComponent implements OnInit {
     }
   }
 
-  loadNext(event: any) {
-    console.log('loadNext: ', event);
+  async getPokemonDataPaginated(): Promise<void> {
+    if (this.atLimit) return;
+    if (this.offset + this.limit > 1025) {
+      this.limit = 1025 - this.offset;
+    }
+    this.isLoading = true;
+    const { results } = await firstValueFrom(this.pokedexService.getAllPokemonDataPaginated(this.offset, this.limit));
+    this.allPokemon?.push(...results);
+    this.offset += this.limit;
+    if (this.offset >= 1025) {
+      this.atLimit = true;
+    }
+    this.isLoading = false;
+  }
+
+  async loadNext(event: any) {
+    if (event === 'end') {
+      await this.getPokemonDataPaginated();
+    }
   }
 }

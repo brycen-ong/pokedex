@@ -1,8 +1,10 @@
-@if (!isLoading) {
-  <mat-card class="pokedex-search-card card" [class]="pokemonPrimaryType + '-type'">
+<mat-card class="pokedex-search-card card" [class]="pokemonPrimaryType + '-type'">
+  @if (!isLoading) {
     <div class="pokedex-search-card-bg" [class]="pokemonPrimaryType + '-type'"></div>
     <div class="pokedex-search-card-section center">
-      <img class="pokedex-search-card-image" [src]="pokemonImage">
+      <div class="pokedex-search-card-image">
+        <img [src]="pokemonImage">
+      </div>
       <div class="pokedex-search-card-subsection center">
         <div class="pokedex-search-card-name">{{ pokemon?.name }}</div>
         <div class="pokedex-search-card-id">#{{ pokemon?.id }}</div>
@@ -13,5 +15,5 @@
         }
       </div>
     </div>
-  </mat-card>
-}
+  }
+</mat-card>

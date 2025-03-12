@@ -23,6 +23,7 @@ export class PokedexService {
       map(([pokemonData, pokemonSpeciesData]) => {
         const abilities  = this.getAbilities(pokemonData.abilities);
         const types = this.getTypes(pokemonData.types);
+        const moves = this.getMoves(pokemonData.moves);
         const flavorText = this.cleanFlavorText(pokemonSpeciesData.flavor_text_entries?.find((flavorText) => flavorText.language.name === 'en')?.flavor_text);
 
         const formattedPokemon: Pokedex.Pokemon = {
@@ -39,6 +40,7 @@ export class PokedexService {
           types,
           abilities: abilities.abilities,
           hidden_abilities: abilities.hiddenAbilities,
+          moves,
           height: (pokemonData.height || 0)/10,
           weight: (pokemonData.weight || 0)/10,
           sprites: pokemonData.sprites,
@@ -110,6 +112,10 @@ export class PokedexService {
     return this.cacheService.get(url);
   }
 
+  private getPokemonMoves(url: string): Observable<PokeApi.PokemonMovesResponse> {
+    return this.cacheService.get(url);
+  }
+
   // util functions
 
   private formatString(string: string): string {
@@ -156,6 +162,15 @@ export class PokedexService {
     });
 
     return evolutionTree;
+  }
+
+  private getMoves(moves: PokeApi.PokemonMove[]): PokeApi.NamedAPIResource[] {
+    const movesCleaned: PokeApi.NamedAPIResource[] = [];
+    moves.forEach((move) => {
+      movesCleaned.push((move.move));
+    });
+
+    return movesCleaned;
   }
 
   private extractId(url: string): number {

@@ -6,17 +6,17 @@ import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { EvolutionTreeComponent } from '../evolution-tree/evolution-tree.component';
 
 @Component({
-  selector: 'app-pokemon-card',
+  selector: 'app-pokemon-details-card',
   imports: [
     MatCardModule,
     MatIconModule,
     PokemonStatComponent,
     EvolutionTreeComponent,
   ],
-  templateUrl: './pokemon-card.component.html',
-  styleUrl: './pokemon-card.component.scss'
+  templateUrl: './pokemon-details-card.component.html',
+  styleUrl: './pokemon-details-card.component.scss'
 })
-export class PokemonCardComponent implements OnChanges {
+export class PokemonDetailsCardComponent implements OnChanges {
   @Input() pokemon?: Pokedex.Pokemon;
   hasEvolutions?: boolean;
   pokemonImage?: string;

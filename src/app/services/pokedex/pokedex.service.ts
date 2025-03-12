@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { firstValueFrom, forkJoin, map, Observable, switchMap } from 'rxjs';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { CacheService } from '../cache/cache.service';
+import { POKEMON_COUNT } from '../../shared/constants/pokeapi.constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokedexService {
+  private allPokemon: PokeApi.NamedAPIResource[] = [];
 
   constructor(
     private cacheService: CacheService,
@@ -60,8 +62,17 @@ export class PokedexService {
     );
   }
 
-  getAllPokemonDataPaginated(offset: number, limit = 100,): Observable<PokeApi.AllPokemonResponse> {
-    return this.getAllPokemonPaginated(offset, limit);
+  async getAllPokemonData(): Promise<void> {
+    const { results } = await firstValueFrom(this.getAllPokemon());
+    this.allPokemon = results;
+  }
+
+  getAllPokemonDataPaginated(offset: number, limit = 360,): PokeApi.NamedAPIResource[] {
+    return this.allPokemon.slice(offset, offset+limit);
+  }
+
+  searchPokemonData(searchKey: string): PokeApi.NamedAPIResource[] {
+    return this.allPokemon.filter((pokemon) => pokemon.name.includes(searchKey))
   }
 
   private getPokemon(pokemon: string, urlOverride?: string): Observable<PokeApi.PokemonResponse> {
@@ -77,9 +88,8 @@ export class PokedexService {
     return this.cacheService.get(url);
   }
 
-  private getAllPokemonPaginated(offset: number, limit: number): Observable<PokeApi.AllPokemonResponse> {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
-
+  private getAllPokemon(): Observable<PokeApi.AllPokemonResponse> {
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=${POKEMON_COUNT}`;
     return this.cacheService.get(url);
   }
 

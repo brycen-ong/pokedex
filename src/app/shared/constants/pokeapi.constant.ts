@@ -1,0 +1,1 @@
+export const POKEMON_COUNT = 1025;

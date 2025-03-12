@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { firstValueFrom, forkJoin, map, Observable, switchMap } from 'rxjs';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
-import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { CacheService } from '../cache/cache.service';
 import { POKEMON_COUNT } from '../../shared/constants/pokeapi.constant';
 

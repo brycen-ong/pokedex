@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 

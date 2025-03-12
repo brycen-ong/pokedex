@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { PokedexService } from '../../services/pokedex/pokedex.service';
-import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { PokemonDetailsCardComponent } from '../../components/pokemon-details-card/pokemon-details-card.component';
 

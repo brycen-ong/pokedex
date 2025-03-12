@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PokemonStatComponent } from '../pokemon-stat/pokemon-stat.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { EvolutionTreeComponent } from '../evolution-tree/evolution-tree.component';
 
 @Component({

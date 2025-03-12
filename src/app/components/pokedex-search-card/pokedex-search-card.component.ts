@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
-import { Pokedex } from '../../shared/interfaces/pokemon.interface';
+import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';

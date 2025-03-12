@@ -1,4 +1,4 @@
-<mat-card class="pokedex-search-card card" [class]="pokemonPrimaryType + '-type'">
+<mat-card class="pokedex-search-card card" [class]="pokemonPrimaryType + '-type'" (click)="goToPokemon()">
   @if (!isLoading) {
     <div class="pokedex-search-card-bg" [class]="pokemonPrimaryType + '-type'"></div>
     <div class="pokedex-search-card-section center">

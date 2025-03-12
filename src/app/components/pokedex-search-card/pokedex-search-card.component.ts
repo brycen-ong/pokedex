@@ -4,6 +4,7 @@ import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { Pokedex } from '../../shared/interfaces/pokemon.interface';
 import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokedex-search-card',
@@ -22,6 +23,8 @@ export class PokedexSearchCardComponent implements OnChanges {
 
   constructor(
     private pokedexService: PokedexService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
   
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -36,5 +39,12 @@ export class PokedexSearchCardComponent implements OnChanges {
 
   extractId(url: string): number {
     return parseInt(url.replace('https://', '').split('/')[4]);
+  }
+
+  goToPokemon(): void {
+    if(this.pokemon?.id === null) return;
+    this.router.navigate([`${this.pokemon?.id}`], {
+      relativeTo: this.route,
+    });
   }
 }

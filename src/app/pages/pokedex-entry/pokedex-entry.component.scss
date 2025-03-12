@@ -1,6 +1,7 @@
 .pokedex-entry {
   display: flex;
   flex-direction: column;
+  margin-top: 48px;
 
   > * {
     flex: 1;

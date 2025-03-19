@@ -28,6 +28,12 @@ $stats: (
   spe: #D51DAD,
 );
 
+$class: (
+  physical: #EB5628,
+  special: #375AB2,
+  status: #828282,
+);
+
 @each $key, $color in $types {
   .#{$key}-type {
     background-color: #{$color};
@@ -37,6 +43,12 @@ $stats: (
 
 @each $key, $color in $stats {
   .#{$key}-stat {
+    background-color: #{$color};
+  }
+}
+
+@each $key, $color in $class {
+  .#{$key}-class {
     background-color: #{$color};
   }
 }

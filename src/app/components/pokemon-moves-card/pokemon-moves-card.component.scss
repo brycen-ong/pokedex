@@ -1,0 +1,53 @@
+.pokemon-moves-card {
+  width: 100%;
+  padding: 36px;
+  display: flex;
+  background-color: #ffffff;
+  margin-top: 36px;
+  font-size: 24px;
+
+  &-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+
+  &-table {
+    font-size: 16px;
+    background-color: #ffffff;
+  }
+
+  &-name {
+    text-transform: capitalize;
+  }
+
+  &-class {
+    text-transform: capitalize;
+    padding: 4px 8px;
+    border-radius: 6px;
+    max-width: 75px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+  }
+
+  &-header {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &-data {
+    font-size: 16px;
+  }
+
+  &-priority{
+    display: flex;
+    justify-content: left;
+    &-icon {
+      &:not(:first-child) {
+        margin-left: -16px;
+      }
+    }
+  }
+}

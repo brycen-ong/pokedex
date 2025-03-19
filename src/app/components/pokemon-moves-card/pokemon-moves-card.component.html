@@ -1,3 +1,76 @@
-<mat-card>
-  
+<mat-card class="pokemon-moves-card">
+  <div class="pokemon-moves-card-title">Moves</div>
+  <table mat-table [dataSource]="moves" class="pokemon-moves-card-table">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Name</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="pokemon-moves-card-data pokemon-moves-card-name">{{ element.name }}</div> 
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Type</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <app-type-chip [type]="element.type" size="l" margin="none"></app-type-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="damage_class">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Class</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="pokemon-moves-card-class" [class]="element.damage_class + '-class'">{{ element.damage_class }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="power">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Power</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+         <div class="pokemon-moves-card-data">{{ element.power ?? '—' }}</div> 
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pp">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">PP</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="pokemon-moves-card-data">{{ element.pp }}</div> 
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="accuracy">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Accuracy</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="pokemon-moves-card-data">{{ element.accuracy ?? '—' }}</div> 
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="pokemon-moves-card-header">Priority</div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+      <!-- @for (count of priorityCount(element.priority); track count) { -->
+        @if (element.priority === 0) {
+          <div class="pokemon-moves-card-data">—</div>
+        } @else {
+          <div class="pokemon-moves-card-data">+{{ element.priority }}</div>
+        }
+      <!-- } -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="movesColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: movesColumns;"></tr>
+  </table>
 </mat-card>

@@ -5,12 +5,14 @@ import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { PokedexService } from '../../services/pokedex/pokedex.service';
 import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TypeChipComponent } from "../../shared/components/type-chip/type-chip.component";
 
 @Component({
   selector: 'app-pokedex-search-card',
   imports: [
     MatCardModule,
-  ],
+    TypeChipComponent
+],
   templateUrl: './pokedex-search-card.component.html',
   styleUrl: './pokedex-search-card.component.scss'
 })

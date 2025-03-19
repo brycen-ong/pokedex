@@ -1,0 +1,27 @@
+.type-chip {
+  border-radius: 6px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 50px;
+  
+  &.size-s {
+    font-size: 14px;
+    padding: 4px 6px;
+  }
+
+  &.size-l {
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+
+  &.margin-s {
+    margin-top: 8px;
+    margin-right: 8px;
+  }
+
+  &.margin-l {
+    margin-right: 12px;
+  }
+}

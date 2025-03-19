@@ -11,7 +11,7 @@
       </div>
       <div class="pokedex-search-card-subsection">
         @for (type of pokemon?.types; track type) {
-          <div class="pokedex-search-card-type" [class]="type + '-type'">{{ type }}</div>
+          <app-type-chip [type]="type" size="s" margin="s"></app-type-chip>
         }
       </div>
     </div>

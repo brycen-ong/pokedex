@@ -7,7 +7,7 @@
     </div>
     <div class="pokemon-card-subsection">
       @for (type of pokemon?.types; track type) {
-        <div class="pokemon-type" [class]="type + '-type'">{{ type }}</div>
+        <app-type-chip [type]="type"></app-type-chip>
       }
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { SvgIconComponent } from '../svg-icon/svg-icon.component';
+import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { RouterLink } from '@angular/router';
 
 @Component({

@@ -28,7 +28,7 @@ export class PokedexService {
 
         const formattedPokemon: Pokedex.Pokemon = {
           id: pokemonData.id,
-          name: pokemonData.name,
+          name: this.cleanPokemonName(pokemonData.name),
           stats: {
             hp: pokemonData.stats?.[0].base_stat,
             atk: pokemonData.stats?.[1].base_stat,
@@ -66,7 +66,40 @@ export class PokedexService {
 
   async getAllPokemonData(): Promise<void> {
     const { results } = await firstValueFrom(this.getAllPokemon());
-    this.allPokemon = results;
+    this.allPokemon = results.map((result) => {
+      result.name = this.cleanPokemonName(result.name);
+      return result;
+    });
+  }
+
+  getPokemonMovesData(movesList: PokeApi.NamedAPIResource[]): Observable<Pokedex.Move[]> {
+    const requestArray: Observable<PokeApi.PokemonMovesResponse>[] = [];
+    movesList.forEach((move) => {
+      requestArray.push(this.getPokemonMoves(move.url));
+    });
+
+    return forkJoin(requestArray).pipe(
+      map(moves => {
+        const pokemonMoveArray: Pokedex.Move[] = [];
+
+        moves.forEach((move) => {
+          const pokemonMove: Pokedex.Move = {
+            id: move.id,
+            name: this.cleanMoveName(move.name),
+            type: move.type.name,
+            damage_class: move.damage_class.name,
+            power: move.power,
+            pp: move.pp,
+            accuracy: move.accuracy,
+            priority: move.priority,
+          }
+
+          pokemonMoveArray.push(pokemonMove);
+        });
+
+        return pokemonMoveArray;
+      })
+    );
   }
 
   getAllPokemonDataPaginated(offset: number, limit = 360,): PokeApi.NamedAPIResource[] {
@@ -80,7 +113,7 @@ export class PokedexService {
   private getPokemon(pokemon: string, urlOverride?: string): Observable<PokeApi.PokemonResponse> {
     if (urlOverride) {
       const id = this.extractId(urlOverride);
-      const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+      const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
       return this.cacheService.get(url);
     }
 
@@ -182,6 +215,70 @@ export class PokedexService {
       .split('\n')
       .join(' ')
       .split('\f')
+      .join(' ');
+  }
+
+  private cleanPokemonName(pokemonName: string | undefined): string {
+    const exceptions: string[] = [
+      'ho-oh',
+      'porygon-z',
+      'type-null',
+      'jangmo-o',
+      'hakamo-o',
+      'kommo-o',
+      'tapu-koko',
+      'tapu-lele',
+      'tapu-bulu',
+      'tapu-fini',
+      'wo-chien',
+      'chien-pao',
+      'ting-lu',
+      'chi-yu',
+    ];
+
+    const twoWordNames: string[]  = [
+      'mr-mime',
+      'mime-jr',
+      'mr-rime',
+      'great-tusk',
+      'scream-tail',
+      'brute-bonnet',
+      'flutter-mane',
+      'slither-wing',
+      'sandy-shocks',
+      'iron-treads',
+      'iron-bundle',
+      'iron-hands',
+      'iron-jugulis',
+      'iron-moth',
+      'iron-thorns',
+      'roaring-moon',
+      'iron-valiant',
+      'walking-wake',
+      'iron-leaves',
+      'gouging-fire',
+      'raging-bolt',
+      'iron-boulder',
+      'iron-crown',
+    ];
+
+    if (exceptions.includes(pokemonName as string)) {
+      return pokemonName as string;
+    }
+
+    if (twoWordNames.includes(pokemonName as string)) {
+      return (pokemonName as string)
+        .split('-')
+        .join(' ');
+    }
+
+    return (pokemonName as string)
+      .split('-')[0];
+  }
+
+  private cleanMoveName(moveName: string | undefined): string {
+    return (moveName as string)
+      .split('-')
       .join(' ');
   }
 }

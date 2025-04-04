@@ -20,7 +20,7 @@ export class PokedexService {
       this.getPokemon(pokemon, urlOverride),
       this.getPokemonSpecies(pokemon, urlOverride),
     ]).pipe(
-      map(([pokemonData, pokemonSpeciesData]) => {
+      map(([pokemonData, pokemonSpeciesData]): [Pokedex.Pokemon, string] => {
         const abilities  = this.getAbilities(pokemonData.abilities);
         const types = this.getTypes(pokemonData.types);
         const moves = this.getMoves(pokemonData.moves);
@@ -46,16 +46,24 @@ export class PokedexService {
           sprites: pokemonData.sprites,
           flavorText,
           baseExp: pokemonData.base_experience,
-          evolutionTree: pokemonSpeciesData.evolution_chain?.url,
         } as Pokedex.Pokemon;
-        return formattedPokemon;
+        return [formattedPokemon, pokemonSpeciesData.evolution_chain?.url];
       }),
-      switchMap((value: Pokedex.Pokemon) => {
-        return this.getPokemonEvolution(value.evolutionTree as string).pipe(
+      switchMap(([value, evolutionChainUrl]) => {
+        return this.getPokemonEvolution(evolutionChainUrl).pipe(
           map((evolutionData) => {
-            const evolutionTree = this.getEvolutions(evolutionData.chain as PokeApi.ChainLink);
+            const evolutionTree: Pokedex.EvolutionTree = {
+              id: evolutionData.id,
+              branches: [],
+            }
+            this.getEvolutions(
+              evolutionData.chain,
+              [],
+              evolutionTree,
+            );
+
             return {
-              ...value,
+              ...(value as Pokedex.Pokemon),
               evolutionTree,
             }
           })
@@ -183,16 +191,30 @@ export class PokedexService {
     return typeStrings;
   }
 
-  private getEvolutions(evolutionChain: PokeApi.ChainLink): Pokedex.Pokemon | Pokedex.Pokemon[] {
-    const evolutionTree: Pokedex.Pokemon | Pokedex.Pokemon[] = {
-      name: evolutionChain.species.name,
+  private getEvolutions(
+    evolutionChain: PokeApi.ChainLink,
+    evolutionBranch: Pokedex.EvolutionBranch,
+    evolutionTree: Pokedex.EvolutionTree,
+  ) {
+    const evolutionNode: Pokedex.EvolutionNode = {
       id: this.extractId(evolutionChain.species.url),
-      evolutionTree: []
-    };
+      name: evolutionChain.species.name,
+    }
+    evolutionBranch.push(evolutionNode);
 
-    evolutionChain.evolves_to.forEach((evolution) => {
-      (evolutionTree.evolutionTree as Pokedex.Pokemon[]).push(this.getEvolutions(evolution) as Pokedex.Pokemon)
-    });
+    if (evolutionChain.evolves_to.length > 0) {
+      evolutionChain.evolves_to.forEach((evolution) => {
+        this.getEvolutions(
+          evolution,
+          [...evolutionBranch],
+          evolutionTree,
+        )
+      })
+    } else {
+      evolutionTree.branches.push(evolutionBranch);
+    }
+
+    console.log(evolutionTree);
 
     return evolutionTree;
   }

@@ -27,7 +27,7 @@ export class PokemonDetailsCardComponent implements OnChanges {
     if (changes['pokemon']) {
       const backUpImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.pokemon?.id}.png`
       this.pokemonImage = this.pokemon?.sprites?.other['official-artwork'].front_default ?? backUpImage;
-      this.hasEvolutions = ((this.pokemon?.evolutionTree as Pokedex.Pokemon)?.evolutionTree as Pokedex.Pokemon[])?.length > 0;
+      this.hasEvolutions = (this.pokemon?.evolutionTree?.branches as Pokedex.EvolutionBranch[])?.length > 0;
     }
   }
 }

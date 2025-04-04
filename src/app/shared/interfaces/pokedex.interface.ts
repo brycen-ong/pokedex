@@ -21,7 +21,19 @@ export namespace Pokedex {
     sprites?: PokeApi.PokemonSprites;
     flavorText?: string;
     baseExp?: number;
-    evolutionTree?: string | Pokemon | Pokemon[];
+    evolutionTree?: EvolutionTree;
+  }
+
+  export interface EvolutionTree {
+    id: number;
+    branches: EvolutionBranch[];
+  }
+
+  export interface EvolutionBranch extends Array<EvolutionNode> {}
+
+  export interface EvolutionNode {
+    name: string;
+    id: number;
   }
   
   export interface Move {

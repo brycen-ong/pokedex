@@ -7,6 +7,7 @@ import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { PokemonDetailsCardComponent } from '../../components/pokemon-details-card/pokemon-details-card.component';
 import { PokemonMovesCardComponent } from "../../components/pokemon-moves-card/pokemon-moves-card.component";
+import { PokemonEvolutionCardComponent } from "../../components/pokemon-evolution-card/pokemon-evolution-card.component";
 
 @Component({
   selector: 'app-pokedex-entry',
@@ -15,7 +16,8 @@ import { PokemonMovesCardComponent } from "../../components/pokemon-moves-card/p
     MatIconModule,
     RouterModule,
     PokemonDetailsCardComponent,
-    PokemonMovesCardComponent
+    PokemonMovesCardComponent,
+    PokemonEvolutionCardComponent
 ],
   templateUrl: './pokedex-entry.component.html',
   styleUrl: './pokedex-entry.component.scss'

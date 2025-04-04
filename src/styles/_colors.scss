@@ -19,6 +19,27 @@ $types: (
   water: #2980EF,
 );
 
+$types-50: (
+  bug: #DBE973,
+  dark: #B5A1A2,
+  dragon:#A7AFF0,
+  electric: #FFE17D,
+  fairy: #F7B7F7,
+  fighting: #FFC080,
+  fire: #F29494,
+  flying: #C0DCF7,
+  ghost: #C296C2,
+  grass: #95E084,
+  ground: #E0A578,
+  ice: #9EE6F9,
+  normal: #CFD0CF,
+  poison: #C8A0E5,
+  psychic: #F7A0BC,
+  rock: #D7D4C0,
+  steel: #AFD0DB,
+  water: #94BFF7,
+);
+
 $stats: (
   hp: #69DC12,
   atk: #EFCC18,
@@ -36,6 +57,13 @@ $class: (
 
 @each $key, $color in $types {
   .#{$key}-type {
+    background-color: #{$color};
+    color: white;
+  }
+}
+
+@each $key, $color in $types-50 {
+  .#{$key}-type-50 {
     background-color: #{$color};
     color: white;
   }

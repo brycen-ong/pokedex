@@ -1,0 +1,20 @@
+<mat-card class="pokemon-evolution-card">
+  <div class="pokemon-evolution-card-title">Evolution Tree</div>
+  <div class="flex-col center">
+    @for (branch of evolutionTree?.branches; track branch;) {
+      <div class="pokemon-evolution-card-branch" [class]="pokemonPrimaryType + '-type'">
+        @for (node of branch; track node.id; let i = $index;) {
+          @if (i !== 0) {
+            <mat-icon fontIcon="arrow_forward" class="pokemon-evolution-card-arrow"></mat-icon>
+          }
+          <div class="flex-col center">
+            <div class="pokemon-evolution-card-image" [class]="pokemonPrimaryType + '-type-50'">
+              <img [src]="getPokemonImage(node.id)">
+            </div>
+            <div class="pokemon-evolution-card-node">{{ node.name }}</div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</mat-card>

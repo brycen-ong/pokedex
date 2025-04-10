@@ -13,9 +13,8 @@ export namespace Pokedex {
       spe?: number;
     }
     types?: string[];
-    abilities?: string[];
-    hidden_abilities?: string[];
-    moves?: PokeApi.NamedAPIResource[];
+    abilities?: Ability[];
+    moves?: Move[];
     height?: number;
     weight?: number;
     sprites?: PokeApi.PokemonSprites;
@@ -45,5 +44,11 @@ export namespace Pokedex {
     pp?: number;
     accuracy?: number;
     priority?: number;
+  }
+
+  export interface Ability {
+    name?: string;
+    description?: string;
+    hidden?: boolean;
   }
 }

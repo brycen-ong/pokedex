@@ -3,7 +3,6 @@ import { PokemonStatComponent } from '../pokemon-stat/pokemon-stat.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Pokedex } from '../../shared/interfaces/pokedex.interface';
-import { EvolutionTreeComponent } from '../evolution-tree/evolution-tree.component';
 import { TypeChipComponent } from "../../shared/components/type-chip/type-chip.component";
 
 @Component({
@@ -12,7 +11,6 @@ import { TypeChipComponent } from "../../shared/components/type-chip/type-chip.c
     MatCardModule,
     MatIconModule,
     PokemonStatComponent,
-    EvolutionTreeComponent,
     TypeChipComponent
 ],
   templateUrl: './pokemon-details-card.component.html',

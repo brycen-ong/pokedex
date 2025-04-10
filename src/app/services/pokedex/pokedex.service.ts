@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom, forkJoin, map, Observable, switchMap } from 'rxjs';
+import { firstValueFrom, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { PokeApi } from '../../shared/interfaces/pokeapi.interface';
 import { Pokedex } from '../../shared/interfaces/pokedex.interface';
 import { CacheService } from '../cache/cache.service';
@@ -15,82 +15,51 @@ export class PokedexService {
     private cacheService: CacheService,
   ) { }
 
-  getPokemonData(pokemon: string, urlOverride?: string): Observable<Pokedex.Pokemon> {
-    return forkJoin([
-      this.getPokemon(pokemon, urlOverride),
-      this.getPokemonSpecies(pokemon, urlOverride),
-    ]).pipe(
-      map(([pokemonData, pokemonSpeciesData]): [Pokedex.Pokemon, string] => {
-        const abilities  = this.getAbilities(pokemonData.abilities);
+  getPokemonDataAll(pokemonUrl?: string): Observable<Pokedex.Pokemon> {
+    return this.getPokemon('', pokemonUrl).pipe(
+      map((pokemonData) => {
         const types = this.getTypes(pokemonData.types);
-        const moves = this.getMoves(pokemonData.moves);
-        const flavorText = this.cleanFlavorText(pokemonSpeciesData.flavor_text_entries?.find((flavorText) => flavorText.language.name === 'en')?.flavor_text);
 
         const formattedPokemon: Pokedex.Pokemon = {
           id: pokemonData.id,
-          name: this.cleanPokemonName(pokemonData.name),
-          stats: {
-            hp: pokemonData.stats?.[0].base_stat,
-            atk: pokemonData.stats?.[1].base_stat,
-            def: pokemonData.stats?.[2].base_stat,
-            spa: pokemonData.stats?.[3].base_stat,
-            spd: pokemonData.stats?.[4].base_stat,
-            spe: pokemonData.stats?.[5].base_stat,
-          },
+          name: pokemonData.name,
           types,
-          abilities: abilities.abilities,
-          hidden_abilities: abilities.hiddenAbilities,
-          moves,
-          height: (pokemonData.height || 0)/10,
-          weight: (pokemonData.weight || 0)/10,
           sprites: pokemonData.sprites,
-          flavorText,
-          baseExp: pokemonData.base_experience,
-        } as Pokedex.Pokemon;
-        return [formattedPokemon, pokemonSpeciesData.evolution_chain?.url];
-      }),
-      switchMap(([value, evolutionChainUrl]) => {
-        return this.getPokemonEvolution(evolutionChainUrl).pipe(
-          map((evolutionData) => {
-            const evolutionTree: Pokedex.EvolutionTree = {
-              id: evolutionData.id,
-              branches: [],
-            }
-            this.getEvolutions(
-              evolutionData.chain,
-              [],
-              evolutionTree,
-            );
+        };
 
-            return {
-              ...(value as Pokedex.Pokemon),
-              evolutionTree,
-            }
-          })
-        );
+        return formattedPokemon;
       })
-    );
+    )
   }
 
-  async getAllPokemonData(): Promise<void> {
-    const { results } = await firstValueFrom(this.getAllPokemon());
-    this.allPokemon = results.map((result) => {
-      result.name = this.cleanPokemonName(result.name);
-      return result;
-    });
-  }
-
-  getPokemonMovesData(movesList: PokeApi.NamedAPIResource[]): Observable<Pokedex.Move[]> {
-    const requestArray: Observable<PokeApi.PokemonMovesResponse>[] = [];
-    movesList.forEach((move) => {
-      requestArray.push(this.getPokemonMoves(move.url));
-    });
-
-    return forkJoin(requestArray).pipe(
-      map(moves => {
-        const pokemonMoveArray: Pokedex.Move[] = [];
-
+  getPokemonDataEntry(pokemon: string): Observable<Pokedex.Pokemon> {
+    return forkJoin([
+      this.getPokemon(pokemon),
+      this.getPokemonSpecies(pokemon),
+    ]).pipe(
+      switchMap(([pokemonData, pokemonSpeciesData]) => {
+        const moves = pokemonData.moves.map((pokemondataMoves) => pokemondataMoves.move);
+        const movesRequestArray: Observable<PokeApi.PokemonMovesResponse>[] = [];
         moves.forEach((move) => {
+          movesRequestArray.push(this.getPokemonMoves(move.url));
+        });
+
+        return forkJoin([
+          of(pokemonData),
+          of(pokemonSpeciesData),
+          this.getPokemonEvolution(pokemonSpeciesData.evolution_chain?.url),
+          ...movesRequestArray,
+        ])
+      }),
+      map(([pokemonData, pokemonSpeciesData, evolutionData, ...movesData]) => {
+        const evolutionTree: Pokedex.EvolutionTree = {
+          id: evolutionData.id,
+          branches: [],
+        }
+        const moves: Pokedex.Move[] = [];
+
+        this.getEvolutions(evolutionData.chain, [], evolutionTree);
+        movesData.forEach((move) => {
           const pokemonMove: Pokedex.Move = {
             id: move.id,
             name: this.cleanMoveName(move.name),
@@ -101,13 +70,43 @@ export class PokedexService {
             accuracy: move.accuracy,
             priority: move.priority,
           }
-
-          pokemonMoveArray.push(pokemonMove);
+          
+          moves.push(pokemonMove);
         });
 
-        return pokemonMoveArray;
+        console.log(moves);
+
+        return {
+          id: pokemonData.id,
+          name: this.cleanPokemonName(pokemonData.name),
+          stats: {
+            hp: pokemonData.stats?.[0].base_stat,
+            atk: pokemonData.stats?.[1].base_stat,
+            def: pokemonData.stats?.[2].base_stat,
+            spa: pokemonData.stats?.[3].base_stat,
+            spd: pokemonData.stats?.[4].base_stat,
+            spe: pokemonData.stats?.[5].base_stat,
+          },
+          types: this.getTypes(pokemonData.types),
+          abilities: this.getAbilities(pokemonData.abilities),
+          height: (pokemonData.height)/10,
+          weight: (pokemonData.weight)/10,
+          sprites: pokemonData.sprites,
+          flavorText: this.cleanFlavorText(pokemonSpeciesData.flavor_text_entries),
+          baseExp: pokemonData.base_experience,
+          evolutionTree,
+          moves
+        }
       })
-    );
+    )
+  }
+
+  async getAllPokemonData(): Promise<void> {
+    const { results } = await firstValueFrom(this.getAllPokemon());
+    this.allPokemon = results.map((result) => {
+      result.name = this.cleanPokemonName(result.name);
+      return result;
+    });
   }
 
   getAllPokemonDataPaginated(offset: number, limit = 360,): PokeApi.NamedAPIResource[] {
@@ -124,7 +123,6 @@ export class PokedexService {
       const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
       return this.cacheService.get(url);
     }
-
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon/${cleanedPokemon}`;
     
@@ -142,7 +140,6 @@ export class PokedexService {
       const url = `https://pokeapi.co/api/v2/pokemon-species/${id}`
       return this.cacheService.get(url);
     }
-
     const cleanedPokemon = pokemon.toLowerCase();
     const url = `https://pokeapi.co/api/v2/pokemon-species/${cleanedPokemon}`;
 
@@ -165,21 +162,17 @@ export class PokedexService {
       .join(' ');
   }
 
-  private getAbilities(abilities: PokeApi.PokemonAbility[] | undefined): {abilities: string[], hiddenAbilities: string[]} {
-    const abilityStrings: string[] = [];
-    const hiddenAbilitiesString: string[] = [];
+  private getAbilities(abilities: PokeApi.PokemonAbility[] | undefined): Pokedex.Ability[] {
+    const abilitiesArray: Pokedex.Ability[] = [];
+  
     abilities?.forEach((ability) => {
-      if (ability.is_hidden) {
-        hiddenAbilitiesString.push(this.formatString(ability.ability.name));
-      } else {
-        abilityStrings.push(this.formatString(ability.ability.name));
-      }
+      abilitiesArray.push({
+        name: ability.ability.name,
+        hidden: ability.is_hidden,
+      })
     });
 
-    return {
-      abilities: abilityStrings,
-      hiddenAbilities: hiddenAbilitiesString,
-    };
+    return abilitiesArray;
   }
 
   private getTypes(types: PokeApi.PokemonType[] | undefined): string[] {
@@ -214,30 +207,20 @@ export class PokedexService {
       evolutionTree.branches.push(evolutionBranch);
     }
 
-    console.log(evolutionTree);
-
     return evolutionTree;
-  }
-
-  private getMoves(moves: PokeApi.PokemonMove[]): PokeApi.NamedAPIResource[] {
-    const movesCleaned: PokeApi.NamedAPIResource[] = [];
-    moves.forEach((move) => {
-      movesCleaned.push((move.move));
-    });
-
-    return movesCleaned;
   }
 
   private extractId(url: string): number {
     return parseInt(url.replace('https://', '').split('/')[4]);
   }
 
-  private cleanFlavorText(flavorText: string | undefined): string {
-    return (flavorText as string)
+  private cleanFlavorText(flavorText: PokeApi.FlavorText[]): string {
+    return flavorText
+      .find((text) => text.language.name === 'en')?.flavor_text
       .split('\n')
       .join(' ')
       .split('\f')
-      .join(' ');
+      .join(' ') as string;
   }
 
   private cleanPokemonName(pokemonName: string | undefined): string {

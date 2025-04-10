@@ -20,18 +20,8 @@
     <div class="pokemon-card-subsection space-between wrap">
       @for (ability of pokemon?.abilities; track ability) {
         <div class="pokemon-card-division">
-          <div class="pokemon-card-value">{{ ability || 'ability' }}</div>
+          <div class="pokemon-card-value spaced">{{ ability.name || 'ability' }}</div>
         </div>
-      }
-      @if(pokemon?.hidden_abilities && (pokemon?.hidden_abilities ?? []).length > 0) {
-        @for (ability of pokemon?.hidden_abilities; track ability) {
-          <div class="pokemon-card-division">
-            <div class="pokemon-card-value ability-hidden">
-              {{ ability || 'ability' }}
-              <mat-icon fontIcon="visibility_off" class="ability-hidden-icon"></mat-icon>
-            </div>
-          </div>
-        }
       }
     </div>
     <div class="pokemon-card-subsection space-between">
@@ -50,12 +40,6 @@
         <div class="pokemon-card-value">{{ pokemon?.baseExp || 'exp'}}</div>
       </div>
     </div>
-    @if (hasEvolutions) {
-      <div class="pokemon-card-title">EVOLUTION TREE</div>
-        <div class="pokemon-card-subsection">
-          <app-evolution-tree [evolutionTree]="pokemon?.evolutionTree"></app-evolution-tree>
-        </div>
-      }
   </div>
   <div class="pokemon-card-section">
     <div class="pokemon-card-title">BASE STATS</div>

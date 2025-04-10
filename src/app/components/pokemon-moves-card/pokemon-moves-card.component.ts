@@ -29,8 +29,8 @@ export class PokemonMovesCardComponent implements OnChanges {
   ) {}
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['pokemon'].currentValue.moves) {
-      this.moves = await firstValueFrom(this.pokedexService.getPokemonMovesData(this.pokemon?.moves as PokeApi.NamedAPIResource[]));
+    if (changes['pokemon']) {
+      this.moves = this.pokemon?.moves as Pokedex.Move[];
     }
   }
 

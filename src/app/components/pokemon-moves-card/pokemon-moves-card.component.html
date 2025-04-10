@@ -63,8 +63,10 @@
       <!-- @for (count of priorityCount(element.priority); track count) { -->
         @if (element.priority === 0) {
           <div class="pokemon-moves-card-data">—</div>
-        } @else {
+        } @else if (element.priority > 0) {
           <div class="pokemon-moves-card-data">+{{ element.priority }}</div>
+        } @else {
+          <div class="pokemon-moves-card-data">{{ element.priority }}</div>
         }
       <!-- } -->
       </td>
